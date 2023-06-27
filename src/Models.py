@@ -21,7 +21,9 @@ def deberta_nli(premise, hypothesis):
         labels = [label_mapping[score_max]
                   for score_max in probabilities.argmax(dim=1)]
 
-    return convert_probabilities_to_decimal(probabilities)
+    probabilities_decimal = convert_probabilities_to_decimal(probabilities)
+
+    return standardise_deberta(probabilities_decimal), labels
 
 
 def bart_nli(premise, hypothesis):
@@ -42,4 +44,6 @@ def bart_nli(premise, hypothesis):
     labels = [label_mapping[score_max]
               for score_max in probabilities.argmax(dim=1)]
 
-    return convert_probabilities_to_decimal(probabilities), labels
+    probabilities_decimal = convert_probabilities_to_decimal(probabilities)
+
+    return probabilities_decimal, labels
