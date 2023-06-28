@@ -26,7 +26,7 @@ def deberta_base_nli(premise, hypothesis):
 
     probabilities = convert_probabilities(probabilities, label_mapping)
 
-    return standardise_deberta(probabilities), labels
+    return standardise_results(probabilities), labels
 
 
 def deberta_v3_nli(premise, hypothesis):
@@ -48,7 +48,7 @@ def deberta_v3_nli(premise, hypothesis):
 
     probabilities = convert_probabilities(probabilities, label_mapping)
 
-    return standardise_deberta_v3(probabilities), labels
+    return standardise_results(probabilities), labels
 
 
 def bart_nli(premise, hypothesis):
@@ -69,4 +69,4 @@ def bart_nli(premise, hypothesis):
 
     probabilities = convert_probabilities(probabilities, label_mapping)
 
-    return probabilities, labels
+    return standardise_results(probabilities), labels

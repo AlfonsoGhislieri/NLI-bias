@@ -3,14 +3,7 @@ import torch
 import time
 
 
-def standardise_deberta(results):
-    label_mapping = {'contradiction': results['contradiction'],
-                     'neutral': results['neutral'],
-                     'entailment': results['entailment']}
-    return label_mapping
-
-
-def standardise_deberta_v3(results):
+def standardise_results(results):
     label_mapping = {'contradiction': results['contradiction'],
                      'neutral': results['neutral'],
                      'entailment': results['entailment']}
