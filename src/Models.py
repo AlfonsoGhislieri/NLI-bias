@@ -24,10 +24,31 @@ def deberta_base_nli(premise, hypothesis):
         labels = [label_mapping[score_max]
                   for score_max in probabilities.argmax(dim=1)]
 
-    probabilities = {name: round(float(probabilities[0][i]) * 100, 1)
-                     for i, name in enumerate(label_mapping)}
+    probabilities = convert_probabilities(probabilities, label_mapping)
 
     return standardise_deberta(probabilities), labels
+
+
+def deberta_v3_nli(premise, hypothesis):
+
+    model_name = "MoritzLaurer/mDeBERTa-v3-base-mnli-xnli"
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForSequenceClassification.from_pretrained(model_name)
+
+    inputs = tokenizer(premise, hypothesis,
+                       truncation=True, return_tensors="pt")
+    inputs.to(DEVICE)
+
+    outputs = model(**inputs)
+
+    probabilities = torch.softmax(outputs.logits, dim=1)
+    label_mapping = ["entailment", "neutral", "contradiction"]
+    labels = [label_mapping[score_max]
+              for score_max in probabilities.argmax(dim=1)]
+
+    probabilities = convert_probabilities(probabilities, label_mapping)
+
+    return standardise_deberta_v3(probabilities), labels
 
 
 def bart_nli(premise, hypothesis):
@@ -46,6 +67,6 @@ def bart_nli(premise, hypothesis):
     labels = [label_mapping[score_max]
               for score_max in probabilities.argmax(dim=1)]
 
-    probabilities_decimal = convert_probabilities_to_decimal(probabilities)
+    probabilities = convert_probabilities(probabilities, label_mapping)
 
-    return probabilities_decimal, labels
+    return probabilities, labels

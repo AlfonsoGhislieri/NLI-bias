@@ -3,18 +3,23 @@ import torch
 import time
 
 
-def convert_probabilities_to_decimal(probabilities, decimal_places=8):
-    probabilities_list = probabilities.tolist()
-    probabilities_decimal = [
-        [format(p, f'.{decimal_places}f') for p in prob] for prob in probabilities_list]
-    return probabilities_decimal
-
-
-def standardise_deberta(deberta_results):
-    label_mapping = {'contradiction': deberta_results['contradiction'],
-                     'neutral': deberta_results['neutral'],
-                     'entailment': deberta_results['entailment']}
+def standardise_deberta(results):
+    label_mapping = {'contradiction': results['contradiction'],
+                     'neutral': results['neutral'],
+                     'entailment': results['entailment']}
     return label_mapping
+
+
+def standardise_deberta_v3(results):
+    label_mapping = {'contradiction': results['contradiction'],
+                     'neutral': results['neutral'],
+                     'entailment': results['entailment']}
+    return label_mapping
+
+
+def convert_probabilities(probabilities, label_mapping):
+    return {name: round(float(pred) * 100, 1)
+            for pred, name in zip(probabilities[0], label_mapping)}
 
 
 def get_random_samples(csv_filename, num_samples):
