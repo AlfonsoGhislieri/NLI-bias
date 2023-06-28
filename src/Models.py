@@ -2,12 +2,15 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from src.Helpers import *
 import torch
 
+DEVICE = torch.device(
+    "cuda") if torch.cuda.is_available() else torch.device("cpu")
 
-def deberta_nli(premise, hypothesis):
 
-    model = AutoModelForSequenceClassification.from_pretrained(
-        'cross-encoder/nli-deberta-base')
-    tokenizer = AutoTokenizer.from_pretrained('cross-encoder/nli-deberta-base')
+def deberta_base_nli(premise, hypothesis):
+
+    model_name = 'cross-encoder/nli-deberta-base'
+    model = AutoModelForSequenceClassification.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     features = tokenizer([premise], [hypothesis],
                          padding=True, truncation=True, return_tensors="pt")
@@ -21,23 +24,22 @@ def deberta_nli(premise, hypothesis):
         labels = [label_mapping[score_max]
                   for score_max in probabilities.argmax(dim=1)]
 
-    probabilities_decimal = convert_probabilities_to_decimal(probabilities)
+    probabilities = {name: round(float(probabilities[0][i]) * 100, 1)
+                     for i, name in enumerate(label_mapping)}
 
-    return standardise_deberta(probabilities_decimal), labels
+    return standardise_deberta(probabilities), labels
 
 
 def bart_nli(premise, hypothesis):
-    nli_model = AutoModelForSequenceClassification.from_pretrained(
-        'facebook/bart-large-mnli')
-    tokenizer = AutoTokenizer.from_pretrained('facebook/bart-large-mnli')
 
-    device = torch.device(
-        "cuda") if torch.cuda.is_available() else torch.device("cpu")
+    model_name = 'facebook/bart-large-mnli'
+    model = AutoModelForSequenceClassification.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     # run through model pre-trained on MNLI
     x = tokenizer.encode(premise, hypothesis, return_tensors='pt',
                          truncation=True,)
-    logits = nli_model(x.to(device))[0]
+    logits = model(x.to(DEVICE))[0]
 
     probabilities = logits.softmax(dim=1)
     label_mapping = ['contradiction', 'neutral', 'entailment']

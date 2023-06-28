@@ -11,7 +11,10 @@ def convert_probabilities_to_decimal(probabilities, decimal_places=8):
 
 
 def standardise_deberta(deberta_results):
-    return [[result[0], result[2], result[1]] for result in deberta_results]
+    label_mapping = {'contradiction': deberta_results['contradiction'],
+                     'neutral': deberta_results['neutral'],
+                     'entailment': deberta_results['entailment']}
+    return label_mapping
 
 
 def get_random_samples(csv_filename, num_samples):
