@@ -1,6 +1,12 @@
-import pandas as pd
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from src.Helpers import *
 import torch
 import time
+import pandas as pd
+
+
+DEVICE = torch.device(
+    "cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 
 def standardise_results(results):
@@ -11,8 +17,14 @@ def standardise_results(results):
 
 
 def convert_probabilities(probabilities, label_mapping):
-    return {name: round(float(pred) * 100, 1)
-            for pred, name in zip(probabilities[0], label_mapping)}
+    # Convert the tensor to a list and extract the first (and only) batch
+    probabilities_list = probabilities.tolist()[0]
+    return {name: round(float(pred) * 100, 1) for pred, name in zip(probabilities_list, label_mapping)}
+
+
+def convert_probabilities_batched(probabilities, label_mapping):
+    probabilities_list = probabilities.tolist()  # Convert the tensor to a list
+    return [{name: round(pred * 100, 1) for pred, name in zip(preds, label_mapping)} for preds in probabilities_list]
 
 
 def get_random_samples(csv_filename, num_samples):
