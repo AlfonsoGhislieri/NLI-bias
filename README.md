@@ -22,6 +22,20 @@ These can be used to run the code without having to re-run the models each time.
 
 ---
 
+## Models
+
+Contains the three different models:
+
+- Bart-large
+- Deberta-v3
+- Deberta base
+
+## Helpers
+
+Contains helper functions used by models
+
+---
+
 ## Initial testing of models and using rationales as hypotheses
 
 ### testing-models.ipynb
@@ -53,3 +67,5 @@ Also runs fine-tuning of bart-large model using religion data that was manually 
 Contains misc anaylsis like, frequency distribution of lengths of hypotheses in NLI training data.
 
 ### analysis.ipynb
+
+Contains all f1 scores, AUC scores, graphs and accuracy breadowns for the test and training results
