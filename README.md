@@ -32,6 +32,6 @@ Includes the initial testing of the three models:
 - Deberta-v3
 - Deberta base
 
-This includes rationales being used as hypotheses and experimentation with different hypotheses.
+This includes rationales being used as hypotheses and experimentation with different hypotheses, and investigating neutral cases.
 
 ###
