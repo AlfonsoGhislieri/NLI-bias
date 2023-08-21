@@ -34,4 +34,10 @@ Includes the initial testing of the three models:
 
 This includes rationales being used as hypotheses and experimentation with different hypotheses, and investigating neutral cases.
 
-###
+---
+
+## Generate results
+
+### generate-results.ipynb
+
+Generates csv outputs of the results for the bart-large and deberta-v3 models using custom curated hypotheses.
