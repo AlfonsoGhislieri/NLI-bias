@@ -41,3 +41,15 @@ This includes rationales being used as hypotheses and experimentation with diffe
 ### generate-results.ipynb
 
 Generates csv outputs of the results for the bart-large and deberta-v3 models using custom curated hypotheses.
+
+Also runs fine-tuning of bart-large model using religion data that was manually annotated
+
+---
+
+## Anaylsis
+
+### misc.ipynb
+
+Contains misc anaylsis like, frequency distribution of lengths of hypotheses in NLI training data.
+
+### analysis.ipynb
