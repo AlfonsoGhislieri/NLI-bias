@@ -1,10 +1,16 @@
 # Using NLI to detect social biases in toxic data
 
-## Installing depencies
+## Setup
 
 To install all required dependencies run:
 
-`pip install -r requirements.txt`
+`pip install -r requirements.txt`
+
+To obtain fine-tuned bart-large model and the required tokenizer download them from:
+
+https://drive.google.com/drive/folders/1JxGfoBGCEiFpzlP12u2hwoa17WOzVGQx?usp=sharing
+
+And put then in the `fine-tuning`folder
 
 ---
 
